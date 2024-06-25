@@ -35,5 +35,10 @@
             getHand: getHand, // Sets the getHand property of the player3 object to the getHand function.
             wins: 0 // Sets the wins property of the player3 object to 0.
         };
+
+        function playGame(player1, player2, playUntil) { // Defines a function called playGame that takes three parameters: player1, player2, and playUntil.
+            while (player1.wins < playUntil && player2.wins < playUntil) { // Starts a loop that continues as long as player1's wins are less than playUntil and player2's wins are less than playUntil.
+                playRound(player1, player2); // Calls the playRound function with player1 and player2 as arguments.
+            }
 </body>
 </html>
