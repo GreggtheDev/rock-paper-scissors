@@ -40,5 +40,25 @@
             while (player1.wins < playUntil && player2.wins < playUntil) { // Starts a loop that continues as long as player1's wins are less than playUntil and player2's wins are less than playUntil.
                 playRound(player1, player2); // Calls the playRound function with player1 and player2 as arguments.
             }
-</body>
-</html>
+
+            return player1.wins > player2.wins ? player1 : player2; // Returns the player who has more wins.
+        }
+
+        function playTournament(player1, player2, player3, player4, playUntil) { // Defines a function called playTournament that takes five parameters: player1, player2, player3, player4, and playUntil.
+            const winner1 = playGame(player1, player2, playUntil); // Calls the playGame function with player1, player2, and playUntil as arguments, and assigns the return value to winner1.
+            const winner2 = playGame(player3, player4, playUntil); // Calls the playGame function with player3, player4, and playUntil as arguments, and assigns the return value to winner2.
+
+            const champion = playGame(winner1, winner2, playUntil); // Calls the playGame function with winner1, winner2, and playUntil as arguments, and assigns the return value to champion.
+
+            document.getElementById('results').innerHTML += `<p class="winner">${champion.name} is the world champion with ${champion.wins} wins!</p>`; // Selects the div with the id 'results' and adds a paragraph to its innerHTML property. The paragraph contains the champion's name and number of wins.
+        }
+
+        // Play a game to 3 wins
+        // playGame(player1, player2, 3);
+
+        // Play a tournament
+        // playTournament(player1, player2, player3, player4, 3);
+    </script> <!-- The script tag is closed here. -->
+</body> 
+
+</html> 
