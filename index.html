@@ -1,45 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for character set and viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title of the webpage -->
     <title>Rock Paper Scissors Game</title>
     <style>
+        /* CSS styles for basic page layout and button */
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
+            text-align: center; /* Centers text alignment in the body */
         }
         h1 {
-            margin-top: 50px;
+            margin-top: 50px; /* Adds top margin of 50 pixels to h1 */
         }
         .players {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
+            display: flex; /* Displays child elements (players) in a row */
+            justify-content: center; /* Centers the row of players */
+            margin-top: 30px; /* Adds top margin of 30 pixels to the row */
         }
         .player {
-            margin: 0 20px;
+            margin: 0 20px; /* Adds margin around each player element */
         }
         .results {
-            margin-top: 30px;
+            margin-top: 30px; /* Adds top margin of 30 pixels to the results section */
         }
         button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
+            padding: 10px 20px; /* Adds padding inside the button */
+            font-size: 16px; /* Sets font size to 16 pixels */
+            cursor: pointer; /* Changes cursor to pointer on hover */
+            background-color: #007bff; /* Sets background color of the button */
+            color: white; /* Sets text color to white */
+            border: none; /* Removes border */
+            border-radius: 5px; /* Rounds corners of the button */
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #0056b3; /* Darkens background color on hover */
         }
     </style>
 </head>
 <body>
+    <!-- Game title -->
     <h1>Rock Paper Scissors Game</h1>
 
+    <!-- Players section -->
     <div class="players">
         <div class="player" id="player1">
             <h2>Player 1</h2>
@@ -51,60 +56,71 @@
         </div>
     </div>
 
+    <!-- Results section -->
     <div class="results">
         <h2>Results</h2>
         <p id="resultText">Waiting for players...</p>
     </div>
 
+    <!-- Button to initiate game play -->
     <button id="playButton">Play Round</button>
 
     <script>
-        // Define hands array
+        // Define hands array with choices for the game
         const hands = ['rock', 'paper', 'scissors'];
 
-        // Function to get a random hand
+        // Function to get a random hand from the hands array
         function getHand() {
+            // Generate a random index between 0 and 2
             const randomIndex = Math.floor(Math.random() * 3);
+            // Return the hand choice based on the random index
             return hands[randomIndex];
         }
 
-        // Player objects
+        // Player objects with name and getHand function
         const player1 = {
             name: 'Player 1',
-            getHand: getHand
+            getHand: getHand // Assigns the getHand function to player1
         };
 
         const player2 = {
             name: 'Player 2',
-            getHand: getHand
+            getHand: getHand // Assigns the getHand function to player2
         };
 
-        // Function to play a round
+        // Function to play a round of Rock-Paper-Scissors
         function playRound(player1, player2) {
+            // Get hands for both players using their getHand functions
             const hand1 = player1.getHand();
             const hand2 = player2.getHand();
 
+            // Display the chosen hands for each player on the webpage
             document.getElementById('player1Choice').textContent = hand1;
             document.getElementById('player2Choice').textContent = hand2;
 
+            // Compare the hands to determine the winner or if it's a tie
             if (hand1 === hand2) {
+                // Display tie message if both hands are the same
                 document.getElementById('resultText').textContent = "It's a tie!";
-                return null;
+                return null; // Return null since there is no winner
             } else if (
                 (hand1 === 'rock' && hand2 === 'scissors') ||
                 (hand1 === 'paper' && hand2 === 'rock') ||
                 (hand1 === 'scissors' && hand2 === 'paper')
             ) {
+                // Display player1 as the winner if conditions match
                 document.getElementById('resultText').textContent = `${player1.name} wins!`;
-                return player1;
+                return player1; // Return player1 object as the winner
             } else {
+                // Display player2 as the winner if conditions match
                 document.getElementById('resultText').textContent = `${player2.name} wins!`;
-                return player2;
+                return player2; // Return player2 object as the winner
             }
         }
 
-        // Function to handle button click
+        // Event listener for the playButton click event
         document.getElementById('playButton').addEventListener('click', function() {
+            // Call playRound function with player1 and player2 objects
             playRound(player1, player2);
         });
     </script>
