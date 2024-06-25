@@ -95,8 +95,13 @@
 
         // Function to update player information on the screen
         function updatePlayerInfo(player, wins, hand) {
-            document.getElementById(player.name.toLowerCase() + "wins").textContent = wins;
-            document.getElementById(player.name.toLowerCase() + "hand").textContent = hand;
+            const winsElement = document.getElementById(player.name.toLowerCase() + "wins");
+            const handElement = document.getElementById(player.name.toLowerCase() + "hand");
+
+            if (winsElement && handElement) {
+                winsElement.textContent = wins;
+                handElement.textContent = hand;
+            }
         }
 
         // Define the playRound function
@@ -145,14 +150,20 @@
             const champion = playGame(winner1, winner2, playUntil);
 
             console.log(champion.name + " is the world champion");
-            document.getElementById(champion.name.toLowerCase()).classList.add("winner");
+            const championElement = document.getElementById(champion.name.toLowerCase());
+            if (championElement) {
+                championElement.classList.add("winner");
+            }
         }
 
-        // Play a game to 3 wins
-        playGame(player1, player2, 3);
+        // Wait for the DOM to be fully loaded before running the JavaScript code
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Play a game to 3 wins
+            playGame(player1, player2, 3);
 
-        // Play a tournament
-        playTournament(player1, player2, player3, player4, 3);
+            // Play a tournament
+            playTournament(player1, player2, player3, player4, 3);
+        });
     </script>
 </body>
 </html>
