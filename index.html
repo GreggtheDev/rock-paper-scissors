@@ -3,20 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rock Paper Scissors Game</title>
+    <title>Rock Paper Scissors Tournament</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .player {
+            border: 2px solid #333;
+            padding: 20px;
+            width: 200px;
+        }
+        .winner {
+            background-color: #f0f0f0;
+            border: 2px solid #666;
+        }
+    </style>
 </head>
-<body><!--Nothing to see here, move along-->
-    <h1>Rock Paper Scissors Game</h1><!--Heading-->
-    <button id="startButton">Start Tournament</button> <!-- Defines a clickable button. -->
-    <div id="results"></div> <!-- Defines a division or a section in an HTML document. ID attribute gives the div a unique id that can be used to select it with JavaScript. -->
+<body>
+    <h1>Rock Paper Scissors Tournament</h1>
 
-    <script> 
+    <div class="container">
+        <div id="player1" class="player">
+            <h2>Player 1</h2>
+            <p>Wins: <span id="p1wins">0</span></p>
+            <p>Hand: <span id="p1hand">-</span></p>
+        </div>
+        <div id="player2" class="player">
+            <h2>Player 2</h2>
+            <p>Wins: <span id="p2wins">0</span></p>
+            <p>Hand: <span id="p2hand">-</span></p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="player3" class="player">
+            <h2>Player 3</h2>
+            <p>Wins: <span id="p3wins">0</span></p>
+            <p>Hand: <span id="p3hand">-</span></p>
+        </div>
+        <div id="player4" class="player">
+            <h2>Player 4</h2>
+            <p>Wins: <span id="p4wins">0</span></p>
+            <p>Hand: <span id="p4hand">-</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Define the hands array
         const hands = ["rock", "paper", "scissors"];
 
+        // Define the getHand function
         function getHand() {
             return hands[parseInt(Math.random()*10)%3];
         }
 
+        // Define player objects
         const player1 = {
             name: 'Player 1',
             getHand: getHand,
@@ -41,23 +93,66 @@
             wins: 0
         };
 
+        // Function to update player information on the screen
+        function updatePlayerInfo(player, wins, hand) {
+            document.getElementById(player.name.toLowerCase() + "wins").textContent = wins;
+            document.getElementById(player.name.toLowerCase() + "hand").textContent = hand;
+        }
+
+        // Define the playRound function
+        function playRound(player1, player2) {
+            const hand1 = player1.getHand();
+            const hand2 = player2.getHand();
+
+            // Update displayed hands
+            updatePlayerInfo(player1, player1.wins, hand1);
+            updatePlayerInfo(player2, player2.wins, hand2);
+
+            // Determine the winner
+            if (hand1 === hand2) {
+                console.log("It's a tie!");
+                return null;
+            } else if (
+                (hand1 === 'rock' && hand2 === 'scissors') ||
+                (hand1 === 'scissors' && hand2 === 'paper') ||
+                (hand1 === 'paper' && hand2 === 'rock')
+            ) {
+                console.log(player1.name + ' wins!');
+                player1.wins++;
+                return player1;
+            } else {
+                console.log(player2.name + ' wins!');
+                player2.wins++;
+                return player2;
+            }
+        }
+
+        // Define the playGame function
         function playGame(player1, player2, playUntil) {
             while (player1.wins < playUntil && player2.wins < playUntil) {
                 playRound(player1, player2);
             }
-            return player1.wins > player2.wins ? player1 : player2;
+
+            const winner = player1.wins > player2.wins ? player1 : player2;
+            return winner;
         }
 
+        // Define the playTournament function
         function playTournament(player1, player2, player3, player4, playUntil) {
             const winner1 = playGame(player1, player2, playUntil);
             const winner2 = playGame(player3, player4, playUntil);
+
             const champion = playGame(winner1, winner2, playUntil);
-            document.getElementById('results').innerHTML += `<p class="winner">${champion.name} is the world champion with ${champion.wins} wins!</p>`;
+
+            console.log(champion.name + " is the world champion");
+            document.getElementById(champion.name.toLowerCase()).classList.add("winner");
         }
 
-        document.getElementById('startButton').onclick = function() {
-            playTournament(player1, player2, player3, player4, 3);
-        };
+        // Play a game to 3 wins
+        playGame(player1, player2, 3);
+
+        // Play a tournament
+        playTournament(player1, player2, player3, player4, 3);
     </script>
-</body> 
+</body>
 </html>
