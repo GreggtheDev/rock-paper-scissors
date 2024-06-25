@@ -17,5 +17,11 @@
         function getHand() { // Defines a function called getHand.
             return hands[parseInt(Math.random()*10)%3]; // Returns a random element from the hands array.
         }
+
+        const player1 = { // Creates an object called player1.
+            name: 'Player 1', // Sets the name property of the player1 object to 'Player 1'.
+            getHand: getHand, // Sets the getHand property of the player1 object to the getHand function.
+            wins: 0 // Sets the wins property of the player1 object to 0.
+        };
 </body>
 </html>
