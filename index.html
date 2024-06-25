@@ -98,7 +98,7 @@
 
         // Define the getHand function
         function getHand() {
-            return hands[parseInt(Math.random()*10)%3];
+            return hands[parseInt(Math.random() * 10) % 3];
         }
 
         // Define player objects
@@ -127,13 +127,12 @@
         };
 
         // Function to update player information on the screen
-        function updatePlayerInfo(player, wins, hand) {
-            const winsElement = document.getElementById(player.name.toLowerCase() + "wins");
-            const handElement = document.getElementById(player.name.toLowerCase() + "hand");
-
-            if (winsElement && handElement) {
-                winsElement.textContent = wins;
-                handElement.textContent = hand;
+        function updatePlayerInfo(player) {
+            const playerElement = document.getElementById(player.name.toLowerCase());
+            if (playerElement) {
+                playerElement.querySelector(".player").classList.add("winner");
+                playerElement.querySelector("#p" + player.name.toLowerCase() + "wins").textContent = player.wins;
+                playerElement.querySelector("#p" + player.name.toLowerCase() + "hand").textContent = player.lastHand;
             }
         }
 
@@ -142,9 +141,12 @@
             const hand1 = player1.getHand();
             const hand2 = player2.getHand();
 
+            player1.lastHand = hand1;
+            player2.lastHand = hand2;
+
             // Update displayed hands
-            updatePlayerInfo(player1, player1.wins, hand1);
-            updatePlayerInfo(player2, player2.wins, hand2);
+            updatePlayerInfo(player1);
+            updatePlayerInfo(player2);
 
             // Determine the winner
             if (hand1 === hand2) {
@@ -185,7 +187,7 @@
             console.log(champion.name + " is the world champion");
             const championElement = document.getElementById(champion.name.toLowerCase());
             if (championElement) {
-                championElement.classList.add("winner");
+                championElement.querySelector(".player").classList.add("winner");
             }
         }
 
@@ -196,6 +198,11 @@
             player2.wins = 0;
             player3.wins = 0;
             player4.wins = 0;
+
+            player1.lastHand = "-";
+            player2.lastHand = "-";
+            player3.lastHand = "-";
+            player4.lastHand = "-";
 
             // Clear previous game results
             const allPlayerContainers = document.querySelectorAll(".player");
@@ -209,7 +216,7 @@
                 container.classList.remove("winner");
             });
 
-            // Play the tournament 
+            // Play the tournament
             playTournament(player1, player2, player3, player4, 3);
         });
     </script>
