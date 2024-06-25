@@ -1,34 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Rock Paper Scissors Game</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors Tournament</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
         }
         .player {
-            margin: 10px;
-            padding: 10px;
-            border: 1px solid #ddd;
+            border: 2px solid #333;
+            padding: 20px;
+            width: 200px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
         }
-        .winner {
-            color: green;
+        .player:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .player h2 {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .player p {
+            margin: 5px 0;
+            color: #777;
+        }
+        .player .winner {
+            background-color: #e6f7ff;
+            border-color: #4da6ff;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <h1>Rock Paper Scissors Game</h1>
-    <button onclick="startTournament()">Start Tournament</button>
-    <div id="results"></div>
+    <h1>Rock Paper Scissors Tournament</h1>
+
+    <button id="playTournamentButton">Play Tournament</button>
+
+    <div class="container">
+        <div class="player" id="player1">
+            <h2>Player 1</h2>
+            <p>Wins: <span id="p1wins">0</span></p>
+            <p>Hand: <span id="p1hand">-</span></p>
+        </div>
+        <div class="player" id="player2">
+            <h2>Player 2</h2>
+            <p>Wins: <span id="p2wins">0</span></p>
+            <p>Hand: <span id="p2hand">-</span></p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="player" id="player3">
+            <h2>Player 3</h2>
+            <p>Wins: <span id="p3wins">0</span></p>
+            <p>Hand: <span id="p3hand">-</span></p>
+        </div>
+        <div class="player" id="player4">
+            <h2>Player 4</h2>
+            <p>Wins: <span id="p4wins">0</span></p>
+            <p>Hand: <span id="p4hand">-</span></p>
+        </div>
+    </div>
 
     <script>
-        // Your JavaScript code goes here
+        // Define the hands array
         const hands = ["rock", "paper", "scissors"];
 
+        // Define the getHand function
         function getHand() {
             return hands[parseInt(Math.random()*10)%3];
         }
 
+        // Define player objects
         const player1 = {
             name: 'Player 1',
             getHand: getHand,
@@ -53,13 +126,25 @@
             wins: 0
         };
 
+        // Function to update player information on the screen
+        function updatePlayerInfo(player, wins, hand) {
+            const winsElement = document.getElementById(player.name.toLowerCase() + "wins");
+            const handElement = document.getElementById(player.name.toLowerCase() + "hand");
+
+            if (winsElement && handElement) {
+                winsElement.textContent = wins;
+                handElement.textContent = hand;
+            }
+        }
+
+        // Define the playRound function
         function playRound(player1, player2) {
             const hand1 = player1.getHand();
             const hand2 = player2.getHand();
 
-            // Update the hands on the webpage
-            document.getElementById('results').innerHTML += `<p>${player1.name} played ${hand1}</p>`;
-            document.getElementById('results').innerHTML += `<p>${player2.name} played ${hand2}</p>`;
+            // Update displayed hands
+            updatePlayerInfo(player1, player1.wins, hand1);
+            updatePlayerInfo(player2, player2.wins, hand2);
 
             // Determine the winner
             if (hand1 === hand2) {
@@ -80,36 +165,53 @@
             }
         }
 
+        // Define the playGame function
         function playGame(player1, player2, playUntil) {
             while (player1.wins < playUntil && player2.wins < playUntil) {
                 playRound(player1, player2);
             }
 
-            return player1.wins > player2.wins ? player1 : player2;
+            const winner = player1.wins > player2.wins ? player1 : player2;
+            return winner;
         }
 
+        // Define the playTournament function
         function playTournament(player1, player2, player3, player4, playUntil) {
             const winner1 = playGame(player1, player2, playUntil);
             const winner2 = playGame(player3, player4, playUntil);
 
             const champion = playGame(winner1, winner2, playUntil);
 
-            document.getElementById('results').innerHTML += `<p class="winner">${champion.name} is the world champion with ${champion.wins} wins!</p>`;
+            console.log(champion.name + " is the world champion");
+            const championElement = document.getElementById(champion.name.toLowerCase());
+            if (championElement) {
+                championElement.classList.add("winner");
+            }
         }
 
-        function startTournament() {
-            // Reset the results div
-            document.getElementById('results').innerHTML = '';
-
-            // Reset the wins
+        // Function to handle click event on the playTournament button
+        document.getElementById("playTournamentButton").addEventListener("click", function() {
+            // Reset player wins
             player1.wins = 0;
             player2.wins = 0;
             player3.wins = 0;
             player4.wins = 0;
 
+            // Clear previous game results
+            const allPlayerContainers = document.querySelectorAll(".player");
+            allPlayerContainers.forEach(container => {
+                const winsElement = container.querySelector("span[id$='wins']");
+                const handElement = container.querySelector("span[id$='hand']");
+                if (winsElement && handElement) {
+                    winsElement.textContent = "0";
+                    handElement.textContent = "-";
+                }
+                container.classList.remove("winner");
+            });
+
             // Play the tournament
             playTournament(player1, player2, player3, player4, 3);
-        }
+        });
     </script>
 </body>
 </html>
